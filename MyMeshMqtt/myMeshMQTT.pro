@@ -25,3 +25,5 @@ FORMS    += mainwindow.ui
 
 target.path = $$[QT_INSTALL_EXAMPLES]/mqtt/myMeshMQTT
 INSTALLS += target
+
+QMAKE_LFLAGS += -no-pie
