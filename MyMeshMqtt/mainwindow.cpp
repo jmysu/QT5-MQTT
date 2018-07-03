@@ -60,51 +60,35 @@
 #include <QtMqtt/QMqttClient>
 #include <QtWidgets/QMessageBox>
 
+void MainWindow::loopMeshNodes(QJsonArray a)
+{
+    QJsonObject obj = a[0].toObject();
+    int nodeId = obj["nodeId"].toInt();
+    //qDebug() << "NodeId:" << nodeId;
+    _listNodes << QString::number(nodeId);
+    qDebug() << _listNodes;
+    QJsonArray array = obj["subs"].toArray();
+    if (array.count()) loopMeshNodes(array);
+}
+
 void MainWindow::findNodes(QString s)
 {
     QStringList sl = s.split(": ");
     if (sl.count()>1 && sl.at(2).startsWith("[{")) {
             QString sJson = sl.at(2);
-            sJson = sJson.mid(1,sJson.length()-3); //remove first []
-            //qDebug() << "\n" << sJson.toUtf8();
             qDebug() << "---------------------------------";
-
-               QJsonDocument doc = QJsonDocument::fromJson(sJson.toUtf8());
-
-               //QJsonDocument doc = QJsonDocument::fromJson(
-               //            "{\"nodeId\":885916069,\"subs\":[{\"nodeId\":885914535,\"subs\":[{\"nodeId\":885914562,\"subs\":[]}]}]}" );
-
-
-               qDebug() << doc.toJson(QJsonDocument::Compact);
-               // This part you have covered
-               QJsonObject jObj = doc.object();
-               _listNodes.clear();
-               _listNodes << QString::number(jObj["nodeId"].toInt());
-               //qDebug() << "nodeId:" << jObj["nodeId"].toInt();
-               //qDebug() << "subs:" << jObj["subs"].toArray();
-
-            QJsonObject jsonObject = doc.object();
-            QJsonArray array = jsonObject["subs"].toArray();
-
-            int idx = 0;
-            for(const QJsonValue& val: array) {
-                QJsonObject loopObj = val.toObject();
-                _listNodes << QString::number(loopObj["nodeId"].toInt());
-                //qDebug() << "[" << idx << "] nodeId   : " << loopObj["nodeId"].toInt();
-                //qDebug() << "[" << idx << "] subs     : " << loopObj["subs"].toArray();
-                ++idx;
-                }
-            qDebug() << "Nodes:" <<_listNodes;
-            if (_listNodes.count()) {
-                QString s;
-                s += "Got Nodes:" + QString::number(_listNodes.count())+" > "+_listNodes.join(",")+"\n";
+            QJsonDocument doc = QJsonDocument::fromJson(sJson.toUtf8());
+            qDebug() << doc.toJson(QJsonDocument::Compact);
+            _listNodes.clear();
+            loopMeshNodes(doc.array());
+            int iCount = _listNodes.count();
+            if (iCount) {
+                QString s = "Got Nodes:" + QString::number(iCount) + " > "+_listNodes.join(",")+"\n";
                 ui->editLog->moveCursor(QTextCursor::End);
                 ui->editLog->insertPlainText(s);
                 ui->editLog->moveCursor(QTextCursor::End);
                 }
             }
-
-
 }
 
 MainWindow::MainWindow(QWidget *parent) :

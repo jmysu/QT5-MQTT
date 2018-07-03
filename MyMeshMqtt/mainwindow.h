@@ -70,6 +70,7 @@ public:
 
     QStringList _listNodes;
     void findNodes(QString);
+    void loopMeshNodes(QJsonArray);
 
 public slots:
     void setClientPort(int p);
