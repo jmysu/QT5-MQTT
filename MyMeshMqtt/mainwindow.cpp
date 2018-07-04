@@ -16,7 +16,7 @@
 #include <QtMqtt/QMqttClient>
 #include <QtWidgets/QMessageBox>
 
-void MainWindow::loopMeshNodes(QJsonArray a)
+void MainWindow::loopMeshNodes(QJsonArray a, int iDepth)
 {
     qDebug() << a;
     QJsonObject obj = a[0].toObject();
@@ -27,16 +27,14 @@ void MainWindow::loopMeshNodes(QJsonArray a)
     QJsonArray subarray = obj["subs"].toArray();
     qDebug() << "subs    :" << subarray.count() << " > " << subarray;
 
-    int idx = 0;
     for(const QJsonValue& val: subarray) {
         QJsonObject loopObj = val.toObject();
         int nodeId = loopObj["nodeId"].toInt();
         _listNodes << QString::number(nodeId);
         QJsonArray array = loopObj["subs"].toArray();
-        qDebug() << "[" << idx << "] nodeId: "   << nodeId;
-        qDebug() << "[" << idx << "] subs  : "   << array;
-        ++idx;
-        if (array.count()) loopMeshNodes(array);
+        qDebug() << "[" << iDepth << "] nodeId: "   << nodeId;
+        qDebug() << "[" << iDepth << "] subs  : "   << array;
+        if (array.count()) loopMeshNodes(array, iDepth+1);
         }
 }
 
@@ -49,7 +47,7 @@ void MainWindow::findNodes(QString s)
             QJsonDocument doc = QJsonDocument::fromJson(sJson.toUtf8());
             qDebug() << doc.toJson(QJsonDocument::Compact);
             _listNodes.clear();
-            loopMeshNodes(doc.array());
+            loopMeshNodes(doc.array(), 1);
             int iCount = _listNodes.count();
             if (iCount) {
                 QString s = "Got Nodes:" + QString::number(iCount) + " > "+_listNodes.join(",")+"\n";
@@ -128,9 +126,16 @@ void MainWindow::on_buttonQuit_clicked()
 
 void MainWindow::updateLogStateChange()
 {
+    QString sState;
+    switch (m_client->state()) {
+        case QMqttClient::Disconnected: sState="Disconnected";break;
+        case QMqttClient::Connecting: sState="Connecting";break;
+        case QMqttClient::Connected: sState="Connected";
+        }
     const QString content = QDateTime::currentDateTime().toString()
                     + QLatin1String(": State Change")
-                    + QString::number(m_client->state())
+                    //+ QString::number(m_client->state())
+                    + ": "+sState
                     + QLatin1Char('\n');
     ui->editLog->moveCursor(QTextCursor::End);
     ui->editLog->insertPlainText(content);
