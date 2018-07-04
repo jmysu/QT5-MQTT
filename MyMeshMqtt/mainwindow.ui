@@ -69,37 +69,32 @@
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
+      <item row="0" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="label_3">
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>Topic:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="maximumSize">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxTopic">
+        <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>16777215</height>
+          <width>400</width>
+          <height>0</height>
          </size>
         </property>
-        <property name="text">
-         <string>Message:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="buttonPublish">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Publish</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>MyMesh/#</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="0" column="2">
@@ -109,20 +104,41 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Pub Topic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_4">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Pub Message</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
        <widget class="QPushButton" name="buttonPing">
         <property name="text">
          <string>Ping</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="comboBoxTopic">
-        <item>
-         <property name="text">
-          <string>MyMesh/#</string>
-         </property>
-        </item>
+      <item row="2" column="0">
+       <widget class="QComboBox" name="comboBoxPubTopic">
+        <property name="maximumSize">
+         <size>
+          <width>400</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <item>
          <property name="text">
           <string>MyMesh/to/gateway</string>
@@ -135,18 +151,31 @@
         </item>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QComboBox" name="comboBoxMessage">
-        <item>
-         <property name="text">
-          <string>This is a broadcast message!</string>
-         </property>
-        </item>
         <item>
          <property name="text">
           <string>getNodes</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>This is a broadcast message!</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="buttonPublish">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Publish</string>
+        </property>
        </widget>
       </item>
      </layout>

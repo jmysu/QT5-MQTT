@@ -148,7 +148,8 @@ void MainWindow::setClientPort(int p)
 
 void MainWindow::on_buttonPublish_clicked()
 {
-    QString sTopic = ui->comboBoxTopic->currentText();
+    //QString sTopic = ui->comboBoxTopic->currentText();
+    QString sTopic = ui->comboBoxPubTopic->currentText();
     QString sMessage = ui->comboBoxMessage->currentText();
     if (m_client->publish(sTopic, sMessage.toUtf8()) == -1)
         QMessageBox::critical(this, QLatin1String("Error"), QLatin1String("Could not publish message"));
