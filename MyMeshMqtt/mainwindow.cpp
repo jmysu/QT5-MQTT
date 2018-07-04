@@ -19,15 +19,7 @@
 void MainWindow::loopMeshNodes(QJsonArray a, int iDepth)
 {
     qDebug() << a;
-    QJsonObject obj = a[0].toObject();
-    int rootNode = obj["nodeId"].toInt();
-    qDebug() << "rootNode:" << rootNode;
-    _listNodes << QString::number(rootNode);
-
-    QJsonArray subarray = obj["subs"].toArray();
-    qDebug() << "subs    :" << subarray.count() << " > " << subarray;
-
-    for(const QJsonValue& val: subarray) {
+    for(const QJsonValue& val: a) {
         QJsonObject loopObj = val.toObject();
         int nodeId = loopObj["nodeId"].toInt();
         _listNodes << QString::number(nodeId);
