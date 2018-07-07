@@ -64,10 +64,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_client, &QMqttClient::disconnected, this, &MainWindow::brokerDisconnected);
 
     connect(m_client, &QMqttClient::messageReceived, this, [this](const QByteArray &message, const QMqttTopicName &topic) {
-        const QString content = QDateTime::currentDateTime().toString()
-                    + QLatin1String(" Received Topic: ")
+        const QString content = "["+QDateTime::currentDateTime().toString("hh:mm:ss.zzz")+"]"
+                    + QLatin1String("#")
                     + topic.name()
-                    + QLatin1String(" Message: ")
+                    + QLatin1String("#")
                     + message
                     + QLatin1Char('\n');
         ui->editLog->moveCursor(QTextCursor::End);
@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_client, &QMqttClient::pingResponseReceived, this, [this]() {
         ui->buttonPing->setEnabled(true);
-        const QString content = QDateTime::currentDateTime().toString()
+        const QString content = "["+QDateTime::currentDateTime().toString(("hh:mm:ss.zzz"))+"]"
                     + QLatin1String(" PingResponse")
                     + QLatin1Char('\n');
         ui->editLog->moveCursor(QTextCursor::End);
@@ -124,7 +124,7 @@ void MainWindow::updateLogStateChange()
         case QMqttClient::Connecting: sState="Connecting";break;
         case QMqttClient::Connected: sState="Connected";
         }
-    const QString content = QDateTime::currentDateTime().toString()
+    const QString content = "["+QDateTime::currentDateTime().toString(("hh:mm:ss.zzz"))+"]"
                     + QLatin1String(": State Change")
                     //+ QString::number(m_client->state())
                     + ": "+sState
